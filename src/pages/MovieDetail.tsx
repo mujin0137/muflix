@@ -65,7 +65,7 @@ export const MovieDetail = () => {
         {/* Trailer Section */}
         {trailer && (
           <div className="mb-12">
-            <h3 className="text-2xl font-bold mb-4">Trailer</h3>
+            <h3 className="text-2xl font-bold mb-4">트레일러</h3>
             <div className="aspect-video w-full max-w-4xl">
               <iframe
                 title="Trailer"

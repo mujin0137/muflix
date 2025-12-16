@@ -1,5 +1,7 @@
 import { useTrendingMovies, useNowPlayingMovies, useTopRatedMovies, usePopularMovies } from '../hooks/useMovies';
 import { MovieRow } from '../components/MovieRow';
+import { HeroCarousel } from '../components/media/HeroCarousel';
+
 
 export const Home = () => {
   const { data: trending, isLoading, isError } = useTrendingMovies();
@@ -10,7 +12,7 @@ export const Home = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-white text-xl">Loading movies...</div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
       </div>
     );
   }
@@ -18,22 +20,26 @@ export const Home = () => {
   if (isError) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center text-white px-4">
-        <h2 className="text-2xl font-bold mb-4">영화를 불러오는데 실패했습니다.</h2>
-        <p className="text-gray-400 mb-4">API 키 설정을 확인하거나 서버를 재시작해주세요.</p>
-        <p className="text-sm text-gray-500">(.env 파일 변경 후에는 서버 재시작이 필요합니다)</p>
+        <div className="text-center space-y-4">
+            <h2 className="text-3xl font-bold text-primary">오류 발생</h2>
+            <p className="text-gray-400">영화를 불러오는 중 문제가 발생했습니다.</p>
+            <button 
+                onClick={() => window.location.reload()}
+                className="px-6 py-2 bg-white text-black rounded hover:bg-gray-200 transition"
+            >
+                다시 시도
+            </button>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-background pb-20">
-        {/* Placeholder for Hero Banner */}
-        <div className="h-[50vh] w-full bg-gradient-to-b from-gray-900 to-background flex items-center justify-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-white">김무진의 영화관</h1>
-        </div>
+      {/* Swipeable Hero Section */}
+      {trending?.results && <HeroCarousel movies={trending.results} />}
 
-      <div className="-mt-32 relative z-10 space-y-2">
-        <MovieRow title="떠오르는 영화들" movies={trending?.results || []} />
+      <div className="-mt-1 relative z-20 space-y-12 pl-4 md:pl-12 pb-12">
         <MovieRow title="현재 상영 중" movies={nowPlaying?.results || []} />
         <MovieRow title="최고 평점" movies={topRated?.results || []} />
         <MovieRow title="인기있는 영화" movies={popular?.results || []} />
@@ -41,3 +47,4 @@ export const Home = () => {
     </div>
   );
 };
+
