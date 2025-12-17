@@ -18,6 +18,10 @@ export const movieApi = {
       const response = await tmdbClient.get<PaginatedResponse<Movie>>('/movie/popular', { params: { page }});
       return response.data;
   },
+  getUpcoming: async (page = 1) => {
+    const response = await tmdbClient.get<PaginatedResponse<Movie>>('/movie/upcoming', { params: { page } });
+    return response.data;
+  },
   searchMovies: async (query: string, page = 1) => {
     const response = await tmdbClient.get<PaginatedResponse<Movie>>('/search/movie', {
       params: { query, page },

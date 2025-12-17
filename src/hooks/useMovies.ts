@@ -29,6 +29,13 @@ export const usePopularMovies = () => {
     });
 };
 
+export const useUpcomingMovies = () => {
+    return useQuery({
+        queryKey: ['movies', 'upcoming'],
+        queryFn: () => movieApi.getUpcoming(),
+    });
+};
+
 export const useMovieDetails = (id: string | undefined) => {
     return useQuery({
         queryKey: ['movie', id],

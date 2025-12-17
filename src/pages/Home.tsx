@@ -1,4 +1,4 @@
-import { useTrendingMovies, useNowPlayingMovies, useTopRatedMovies, usePopularMovies } from '../hooks/useMovies';
+import { useTrendingMovies, useNowPlayingMovies, useTopRatedMovies, usePopularMovies, useUpcomingMovies } from '../hooks/useMovies';
 import { MovieRow } from '../components/MovieRow';
 import { HeroCarousel } from '../components/media/HeroCarousel';
 
@@ -8,6 +8,7 @@ export const Home = () => {
   const { data: nowPlaying } = useNowPlayingMovies();
   const { data: topRated } = useTopRatedMovies();
   const { data: popular } = usePopularMovies();
+  const { data: upcoming } = useUpcomingMovies();
 
   if (isLoading) {
     return (
@@ -43,6 +44,7 @@ export const Home = () => {
         <MovieRow title="현재 상영 중" movies={nowPlaying?.results || []} />
         <MovieRow title="최고 평점" movies={topRated?.results || []} />
         <MovieRow title="인기있는 영화" movies={popular?.results || []} />
+        <MovieRow title="개봉 예정작" movies={upcoming?.results || []} />
       </div>
     </div>
   );

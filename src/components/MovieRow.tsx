@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import type { Movie } from '../api/types';
 import { MovieCard } from './MovieCard';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface MovieRowProps {
   title: string;
@@ -13,6 +14,17 @@ export const MovieRow = ({ title, movies }: MovieRowProps) => {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [isDragging, setIsDragging] = useState(false); // To distinguish click vs drag
+
+  const handleClickScroll = (direction: 'left' | 'right') => {
+      if (rowRef.current) {
+          const { clientWidth, scrollLeft } = rowRef.current;
+          const scrollTo = direction === 'left' 
+              ? scrollLeft - clientWidth * 0.7 
+              : scrollLeft + clientWidth * 0.7;
+          
+          rowRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+      }
+  };
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!rowRef.current) return;
@@ -56,11 +68,20 @@ export const MovieRow = ({ title, movies }: MovieRowProps) => {
   if (!movies || movies.length === 0) return null;
 
   return (
-    <section className="py-8">
-      <h2 className="mb-4 text-2xl font-bold text-text-main px-4 md:px-8">
+    <section className="py-8 group/row relative">
+      <h2 className="mb-4 text-2xl font-bold text-text-main px-4 md:px-8 group-hover/row:text-white transition-colors">
         {title}
       </h2>
+      
       <div className="relative group">
+         {/* Left Arrow */}
+         <button 
+            className="absolute -left-3 md:-left-6 top-0 bottom-2 z-40 bg-black/50 hover:bg-black/70 w-12 hidden group-hover:flex items-center justify-center transition-opacity opacity-0 group-hover:opacity-100 cursor-pointer rounded-l-lg"
+            onClick={() => handleClickScroll('left')}
+         >
+            <ChevronLeft className="w-8 h-8 text-white" />
+         </button>
+
         <div
           ref={rowRef}
           className={`flex gap-4 overflow-x-auto pb-4 px-4 md:px-8 scrollbar-hide select-none ${
@@ -80,6 +101,14 @@ export const MovieRow = ({ title, movies }: MovieRowProps) => {
             </div>
           ))}
         </div>
+
+        {/* Right Arrow */}
+        <button 
+            className="absolute right-0 top-0 bottom-4 z-40 bg-black/50 hover:bg-black/70 w-12 hidden group-hover:flex items-center justify-center transition-opacity opacity-0 group-hover:opacity-100 cursor-pointer rounded-l-lg"
+            onClick={() => handleClickScroll('right')}
+        >
+            <ChevronRight className="w-8 h-8 text-white" />
+        </button>
       </div>
     </section>
   );
